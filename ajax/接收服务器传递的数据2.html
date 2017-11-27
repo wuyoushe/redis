@@ -1,0 +1,29 @@
+<script type="text/javascript">
+	//get方式是通过url地址栏发出请求，，传递参数也是通过地址栏传递
+	//post方式通过表单的形式发出请求，如果传递参数通过send方法传递
+	try{
+		//创建对象new
+		var xhr = new XMLHttpRequest();
+	}catch(err)
+	{
+		try{
+			var xhr = new ActiveXObject("Msxml12.XMLHTTP");
+		}catch(err)
+		{
+			alert('请下载新版浏览器');
+			location.href='www.baidu.com';
+		}
+	}
+	//post方式发出请求
+	xhr.open("POST","data_post.php",true);
+	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	var data = 'name=zhangsan&age=30';
+	xhr.send(data);
+	xhr.onreadystatechange = function()
+	{
+		if(xhr.readyState == 4&&xhr.status == 200)
+		{
+			alert(xhr.responseText);
+		}
+	}
+</script>

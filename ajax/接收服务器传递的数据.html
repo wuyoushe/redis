@@ -1,0 +1,28 @@
+<script type="text/javascript">
+	try{
+		var xhr = new XMLHttpRequest();
+	}catch(err)
+	{
+		try{
+			var xhr = new ActiveXObject("Msxml12.XMLHTTP");
+		}catch(err)
+		{
+			alert('请下载新版浏览器');
+			location.href='www.baidu.com';
+		}
+		
+	}
+	//开启ajax传入三个参数
+	xhr.open("GET","data.php",true);
+	//发送请求
+	xhr.send();
+	//监听xhr的状态
+	xhr.onreadystatechange = function()
+	{
+		if(xhr.readyState==4&&xhr.status==200)
+		{
+			//接收服务器回应的数据，通过xhr对象的reponseText属性
+			alert(xhr.responseText);
+		}
+	}
+</script>

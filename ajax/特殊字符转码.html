@@ -1,0 +1,31 @@
+<script type="text/javascript">
+	try{
+		var xhr = new XMLHttpRequest();
+	}catch(err)
+	{
+		try{
+			var xhr = new ActiveXObject("Msxml12.XMLHTTP");
+		}catch(err)
+		{
+			alert('请下载新版浏览器');
+			location.href='www.baidu.com';
+		}
+		
+	}
+	//encodeURIComponent()对字符进行转码
+	// var name = encodeURI('love&hate');
+	// xhr.open("GET",'data.php?name='+name+'&'+Math.random(),true);
+	var name = encodeURIComponent('love&hate');
+	xhr.open('GET','data_get.php?name='+name+'&'+Math.random(),true);
+	//发送请求
+	xhr.send();
+	//监听xhr的状态
+	xhr.onreadystatechange = function()
+	{
+		if(xhr.readyState==4&&xhr.status==200)
+		{
+			//接收服务器回应的数据，通过xhr对象的reponseText属性
+			alert(xhr.responseText);
+		}
+	}
+</script>

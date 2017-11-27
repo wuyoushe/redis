@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form>
+		<p>用户名: <input type="text" name="user"></p>
+		<p>密&nbsp;&nbsp;码: <input type="password" name="pwd"></p>
+		<p>邮&nbsp;&nbsp;箱: <input type="text" name="email"></p>
+		<p><button>提交</button></p>
+	</form>
+	<script type="text/javascript">
+		var button = document.getElementsByTagName('button')[0];
+		button.onclick = function()
+		{
+			//我们可以使用javascript提供的对象FormData对象来收集表单项的值，
+			//不用一个个的获取了 new FormData(),参数就是form标签节点对象
+			//因为FormData收集的就是表单的内容，所以不需要使用setRequestHeader设置头部信息
+			var oForm = document.getElementsByTagName('form')[0];
+			var content = new FormData(oForm);
+			console.log(content);
+			try{
+				var xhr = new XMLHttpRequest();
+			}catch(error)
+			{
+				try{
+					var xhr = new ActiveXObject("Msxml2.XMLHTTP");
+				}catch(error)
+				{
+					alert('请下载新版浏览器');
+					location.href='www.baidu.com';
+				}
+			}
+			xhr.open("POST","form.php",true);
+			xhr.send(content);
+			xhr.onreadystatechange=function()
+			{
+				if(xhr.readyState==4&&xhr.status==200)
+				{
+					console.log(111);
+					console.log(xhr.responseText);
+				}
+			}
+			//阻止默认行为的执行
+			return false;
+		}
+	</script>
+	
+</body>
+</html>

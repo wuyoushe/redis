@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		#parent{width:500px;height:20px;border:1px solid #666;position:relative;display:block;}
+		#child{width:0%;height:20px;background:pink;position:absolute;left:0;top:0;display: block;}
+	</style>
+</head>
+<body>
+	<form>
+		<p>用户名: <input type="text" name="user"></p>
+		<p>密&nbsp;&nbsp;码: <input type="password" name="pwd"></p>
+		<p>邮&nbsp;&nbsp;箱: <input type="text" name="email"></p>
+		<div id="parent">
+			<div id="child">
+				
+			</div>
+		</div>
+		<p>头&nbsp;&nbsp;像: <input type="file" name="user_pic"></p>
+		<p><button>提交</button></p>
+	</form>
+	<script type="text/javascript">
+		var button = document.getElementsByTagName('button')[0];
+		button.onclick = function()
+		{
+			//我们可以使用javascript提供的对象FormData对象来收集表单项的值，
+			//不用一个个的获取了 new FormData(),参数就是form标签节点对象
+			//因为FormData收集的就是表单的内容，所以不需要使用setRequestHeader设置头部信息
+			var oForm = document.getElementsByTagName('form')[0];
+			var content = new FormData(oForm);
+			console.log(content);
+			try{
+				var xhr = new XMLHttpRequest();
+			}catch(error)
+			{
+				try{
+					var xhr = new ActiveXObject("Msxml2.XMLHTTP");
+				}catch(error)
+				{
+					alert('请下载新版浏览器');
+					location.href='www.baidu.com';
+				}
+			}
+			//通过xhr.upload字对象的progress事件，可以获得上传的文件的
+			//实时大小
+			xhr.upload.onprogress = function(event)
+			{
+				//console.log(event);
+				var loaded = event.loaded;
+				var total = event.total;
+				var scale = Math.floor(loaded/total*100);
+				//让进度条按比例显示
+				var child = document.getElementById('child');
+				var parent = document.getElementById('parent');
+				child.style.display = 'block';
+				parent.style.display = 'block';
+				child.style.width= scale+'%';
+				child.innerHTML = scale+'%';
+				child.style.textAlign = 'center';
+				if(scale==100)
+				{
+					child.style.display='none';
+					parent.style.display='none';
+				}
+			}
+			xhr.open("POST","upload.php",true);
+			xhr.send(content);
+			xhr.onreadystatechange=function()
+			{
+				if(xhr.readyState==4&&xhr.status==200)
+				{
+					console.log(xhr.responseText);
+				}
+			}
+			//阻止默认行为的执行
+			return false;
+		}
+	</script>
+	
+</body>
+</html>
